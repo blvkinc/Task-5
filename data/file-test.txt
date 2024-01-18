@@ -1,0 +1,7 @@
+Title,Author,Genre,Year,Rating
+The Great Gatsby,F. Scott Fitzgerald,Fiction,1925,4.2
+To Kill a Mockingbird,Harper Lee,Fiction,1960,4.5
+1984,George Orwell,Dystopian,1949,4.0
+Pride and Prejudice,Jane Austen,Romance,1813,4.7
+The Hobbit,J.R.R. Tolkien,Fantasy,1937,4.6
+The Catcher in the Rye,J.D. Salinger,Fiction,1951,4.1
