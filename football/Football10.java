@@ -21,14 +21,32 @@ public class Football10 {
             new Club(11, "Eibar", 22, 5, 1, 16, 47, 54, -7, 21, 20, 4, 8, 34),
             new Club(12, "Leganes", 22, 0, 0, 22, 22, 60, -38, 15, 25, 1, 0, 1)
         );
+        long startTimeSequential = System.currentTimeMillis();
 
-        // Example: Finding clubs with the lowest number of fouls committed
-        List<Club> fairPlayClubs = clubList.stream()
+        // Example: Finding clubs with the lowest number of fouls committed using sequential stream
+        List<Club> fairPlayClubsSequential = clubList.stream()
                 .sorted(Comparator.comparingInt(Club::getFoulsCommitted))
                 .limit(3)  // Top 3 clubs with the lowest number of fouls committed
                 .collect(Collectors.toList());
 
-        System.out.println("Fair Play Clubs with Lowest Fouls Committed:");
-        fairPlayClubs.forEach(System.out::println);
+        long endTimeSequential = System.currentTimeMillis();
+
+        System.out.println("Fair Play Clubs with Lowest Fouls Committed (Sequential):");
+        fairPlayClubsSequential.forEach(System.out::println);
+        System.out.println("Sequential Execution Time: " + (endTimeSequential - startTimeSequential) + " ms");
+
+        long startTimeParallel = System.currentTimeMillis();
+
+        // Example: Finding clubs with the lowest number of fouls committed using parallel stream
+        List<Club> fairPlayClubsParallel = clubList.parallelStream()
+                .sorted(Comparator.comparingInt(Club::getFoulsCommitted))
+                .limit(3)  // Top 3 clubs with the lowest number of fouls committed
+                .collect(Collectors.toList());
+
+        long endTimeParallel = System.currentTimeMillis();
+
+        System.out.println("\nFair Play Clubs with Lowest Fouls Committed (Parallel):");
+        fairPlayClubsParallel.forEach(System.out::println);
+        System.out.println("Parallel Execution Time: " + (endTimeParallel - startTimeParallel) + " ms");
     }
 }
