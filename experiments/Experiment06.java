@@ -16,10 +16,22 @@ public class Experiment06 {
     List<String> namesList = Arrays.asList(namesArray);
 
     // Using explicit interface implementation
-    long startTime = System.currentTimeMillis();
+    long startTimeExplicit = System.currentTimeMillis();
     namesList.forEach(new StringPrintConsumer());
-    long endTime = System.currentTimeMillis();
-    System.out.println("Explicit Interface Implementation Time: " + (endTime - startTime) + " ms");
+    long endTimeExplicit = System.currentTimeMillis();
+    System.out.println("Explicit Interface Implementation Time: " + (endTimeExplicit - startTimeExplicit) + " ms");
+
+    // Using parallel stream
+    long startTimeParallel = System.currentTimeMillis();
+    namesList.parallelStream().forEach(new StringPrintConsumer());
+    long endTimeParallel = System.currentTimeMillis();
+    System.out.println("Parallel Stream Time: " + (endTimeParallel - startTimeParallel) + " ms");
+
+    // Using stream
+    long startTimeStream = System.currentTimeMillis();
+    namesList.stream().forEach(new StringPrintConsumer());
+    long endTimeStream = System.currentTimeMillis();
+    System.out.println("Stream Time: " + (endTimeStream - startTimeStream) + " ms");
   }
 
   public static void main(String[] args) {

@@ -10,14 +10,34 @@ public class Experiment07 {
     List<String> namesList = Arrays.asList(namesArray);
 
     // Using anonymous inner class
-    long startTime = System.currentTimeMillis();
+    long startTimeAnonymous = System.currentTimeMillis();
     namesList.forEach(new Consumer<String>() {
       public void accept(String str) {
         System.out.println(str);
       }
     });
-    long endTime = System.currentTimeMillis();
-    System.out.println("Anonymous Inner Class Time: " + (endTime - startTime) + " ms");
+    long endTimeAnonymous = System.currentTimeMillis();
+    System.out.println("Anonymous Inner Class Time: " + (endTimeAnonymous - startTimeAnonymous) + " ms");
+
+    // Using parallel stream
+    long startTimeParallel = System.currentTimeMillis();
+    namesList.parallelStream().forEach(new Consumer<String>() {
+      public void accept(String str) {
+        System.out.println(str);
+      }
+    });
+    long endTimeParallel = System.currentTimeMillis();
+    System.out.println("Parallel Stream Time: " + (endTimeParallel - startTimeParallel) + " ms");
+
+    // Using stream
+    long startTimeStream = System.currentTimeMillis();
+    namesList.stream().forEach(new Consumer<String>() {
+      public void accept(String str) {
+        System.out.println(str);
+      }
+    });
+    long endTimeStream = System.currentTimeMillis();
+    System.out.println("Stream Time: " + (endTimeStream - startTimeStream) + " ms");
   }
 
   public static void main(String[] args) {

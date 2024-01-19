@@ -9,9 +9,21 @@ public class Experiment05 {
     List<String> namesList = Arrays.asList(namesArray);
 
     // Using declarative style programming with lambda expression
-    long startTime = System.currentTimeMillis();
+    long startTimeDeclarative = System.currentTimeMillis();
     namesList.forEach(name -> System.out.println(name));
-    long endTime = System.currentTimeMillis();
-    System.out.println("Declarative Style Time: " + (endTime - startTime) + " ms");
+    long endTimeDeclarative = System.currentTimeMillis();
+    System.out.println("Declarative Style Time: " + (endTimeDeclarative - startTimeDeclarative) + " ms");
+
+    // Using parallel stream
+    long startTimeParallel = System.currentTimeMillis();
+    namesList.parallelStream().forEach(name -> System.out.println(name));
+    long endTimeParallel = System.currentTimeMillis();
+    System.out.println("Parallel Stream Time: " + (endTimeParallel - startTimeParallel) + " ms");
+
+    // Using stream
+    long startTimeStream = System.currentTimeMillis();
+    namesList.stream().forEach(name -> System.out.println(name));
+    long endTimeStream = System.currentTimeMillis();
+    System.out.println("Stream Time: " + (endTimeStream - startTimeStream) + " ms");
   }
 }
