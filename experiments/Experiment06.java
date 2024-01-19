@@ -1,31 +1,27 @@
 package experiments;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
-/******************************************************************************
- * This version is similar to the last but the interface implementation is
- * done more explicity. To do this the custom consumer has to implement the 
- * accept method.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
-
 public class Experiment06 {
-  class StringPrintConsumer implements Consumer<String>{
+  class StringPrintConsumer implements Consumer<String> {
     public void accept(String str) {
-      System.out.println(str);     
-    } 
+      System.out.println(str);
+    }
   }
-  
+
   public void run() {
-    String[] n1 = { "Kevan", "John", "Matthew" };
+    String[] namesArray = {"Steve", "David", "Matt"};
+    List<String> namesList = Arrays.asList(namesArray);
 
-    List<String> n2 = Arrays.asList(n1);  
-
-    n2.forEach(new StringPrintConsumer());
+    // Using explicit interface implementation
+    long startTime = System.currentTimeMillis();
+    namesList.forEach(new StringPrintConsumer());
+    long endTime = System.currentTimeMillis();
+    System.out.println("Explicit Interface Implementation Time: " + (endTime - startTime) + " ms");
   }
-  
+
   public static void main(String[] args) {
     new Experiment06().run();
   }

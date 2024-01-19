@@ -1,25 +1,27 @@
 package experiments;
 
-import java.util.*;
-
-/******************************************************************************
- * This version introduces the use of Predicates. A predicates is a boolean
- * valued function. Here we use a lambda to implement a predicate that filters
- * out names that do not include an e character.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Experiment09 {
-
   public void run() {
-    String[] n1 = { "Kevan", "John", "Matthew" };
+    String[] namesArray = {"Steve", "David", "Matt"};
+    List<String> namesList = Arrays.asList(namesArray);
 
-    List<String> n2 = Arrays.asList(n1);
+    // Using a Predicate to filter names containing the character 'i'
+    long startTimeSequential = System.currentTimeMillis();
+    namesList.stream().filter(name -> name.contains("i"))
+                     .forEach(name -> System.out.println("Sequential: " + name));
+    long endTimeSequential = System.currentTimeMillis();
+    System.out.println("Sequential Stream Time: " + (endTimeSequential - startTimeSequential) + " ms");
 
-    n2.stream().filter(name -> name.contains("e"))
-        .forEach(name -> System.out.println(name));
-
+    // Using a Predicate to filter names containing the character 'i' in parallel
+    long startTimeParallel = System.currentTimeMillis();
+    namesList.parallelStream().filter(name -> name.contains("i"))
+                              .forEach(name -> System.out.println("Parallel: " + name));
+    long endTimeParallel = System.currentTimeMillis();
+    System.out.println("Parallel Stream Time: " + (endTimeParallel - startTimeParallel) + " ms");
   }
 
   public static void main(String[] args) {

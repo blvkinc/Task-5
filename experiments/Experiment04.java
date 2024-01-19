@@ -1,27 +1,24 @@
 package experiments;
 
 import java.lang.reflect.Method;
-import java.util.*;
-
-/******************************************************************************
- * In this code the array is converted to a List and the methods available to 
- * are listed using reflection. Note this is an immutable list so methods
- * such as add, which are defined in the List interface are not available. To
- * proved this try adding a name to the list (uncomment the code below).
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.Arrays;
+import java.util.List;
 
 public class Experiment04 {
   public static void main(String[] args) {
-    String[] n1 = { "Kevan", "John", "Matthew" };
+    String[] namesArray = {"Steve", "David", "Matt"};
 
-    List<String> n2 = Arrays.asList(n1);  
-    System.out.println(n2.getClass());
+    // Convert array to List using Arrays.asList()
+    List<String> namesList = Arrays.asList(namesArray);
+    System.out.println(namesList.getClass());
 
-    for(Method m: n2.getClass().getDeclaredMethods()) {
-      System.out.println(m.getName());
+    // Using reflection to list methods available on the List
+    for (Method method : namesList.getClass().getDeclaredMethods()) {
+      System.out.println(method.getName());
     }
-//    n2.add("new name");
+
+    // Uncommenting the code below will result in an UnsupportedOperationException
+    // as Arrays.asList() returns a fixed-size list (immutable).
+    // namesList.add("new name");
   }
 }

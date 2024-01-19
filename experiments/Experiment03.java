@@ -1,24 +1,43 @@
 package experiments;
 
-import java.util.*;
-
-/******************************************************************************
- * In this code the array is converted to a List so that advantages of the 
- * Collections API my used later.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Experiment03 {
   public static void main(String[] args) {
-    String[] n1 = { "Kevan", "John", "Matthew" };
+    String[] namesArray = {"Steve", "David", "Matt"};
 
-    List<String> n2 = Arrays.asList(n1);  
-    System.out.println(n2.getClass());
+    // Convert array to List using Arrays.asList()
+    List<String> namesList = Arrays.asList(namesArray);
+    System.out.println(namesList.getClass());
 
-    
-    for(String name:n2) {
+    // Using enhanced for loop (for-each loop) on List
+    long startTime = System.currentTimeMillis();
+    for (String name : namesList) {
       System.out.println(name);
     }
+    long endTime = System.currentTimeMillis();
+    System.out.println("Foreach Loop Time: " + (endTime - startTime) + " ms");
+
+    // Using Java Streams to convert array to List
+    startTime = System.currentTimeMillis();
+    List<String> namesStreamList = Arrays.stream(namesArray)
+                                        .collect(Collectors.toList());
+    endTime = System.currentTimeMillis();
+    System.out.println(namesStreamList.getClass());
+
+    // Using Java Streams for sequential processing on List
+    startTime = System.currentTimeMillis();
+    namesStreamList.forEach(System.out::println);
+    endTime = System.currentTimeMillis();
+    System.out.println("Stream Sequential Time: " + (endTime - startTime) + " ms");
+
+    // Using Java Streams for parallel processing on List
+    startTime = System.currentTimeMillis();
+    namesStreamList.parallelStream()
+                   .forEach(System.out::println);
+    endTime = System.currentTimeMillis();
+    System.out.println("Stream Parallel Time: " + (endTime - startTime) + " ms");
   }
 }

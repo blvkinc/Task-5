@@ -2,22 +2,27 @@ package experiments;
 
 import java.time.LocalDate;
 import java.util.function.Supplier;
-
-/******************************************************************************
- * This is another example of using a supplier. Suppliers will be used like 
- * this in realtime applications for capturing things like sensor readings.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.stream.Stream;
 
 public class Experiment16 {
   public static void main(String[] args) {
-    Supplier<String> dateSupplier = new Supplier<String>() {
-      public String get() {
-        LocalDate date = LocalDate.now(); 
-        return date.toString();
-      }
-    };  
-    System.out.printf("Today is %s", dateSupplier.get());
+    Supplier<LocalDate> dateSupplier = LocalDate::now;
+
+    // Sequential stream processing
+    long startTimeSequential = System.currentTimeMillis();
+    Stream.generate(dateSupplier)
+          .limit(5)
+          .forEach(date -> System.out.printf("Sequential: %s\n", date));
+    long endTimeSequential = System.currentTimeMillis();
+    System.out.println("Sequential Stream Time: " + (endTimeSequential - startTimeSequential) + " ms");
+
+    // Parallel stream processing
+    long startTimeParallel = System.currentTimeMillis();
+    Stream.generate(dateSupplier)
+          .parallel()
+          .limit(5)
+          .forEach(date -> System.out.printf("Parallel: %s\n", date));
+    long endTimeParallel = System.currentTimeMillis();
+    System.out.println("Parallel Stream Time: " + (endTimeParallel - startTimeParallel) + " ms");
   }
 }
