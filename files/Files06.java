@@ -1,24 +1,33 @@
 package files;
 
 import java.io.*;
-
-/******************************************************************************
- * This program prints the contents of a file on a single line. It is 
- * demonstrating a reduce operation and uses different syntax to access the 
- * concat method of the String class.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.concurrent.TimeUnit;
 
 public class Files06 {
 
   public static void main(String[] args) throws Exception {
-    BufferedReader r  = 
-       new BufferedReader(new FileReader("data/file-test.txt"));
+    long startTime = System.nanoTime();
 
-    System.out.println(r.lines().reduce("", String::concat));
-    
-    r.close();
+    // Sequential Processing
+    try (BufferedReader reader = new BufferedReader(new FileReader("data/file-test.txt"))) {
+      System.out.println(reader.lines().reduce("", String::concat));
+    }
+
+    long endTime = System.nanoTime();
+    long sequentialTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    System.out.println("Sequential Processing Time: " + sequentialTime + " milliseconds");
+
+    // Reset start time for parallel processing
+    startTime = System.nanoTime();
+
+    // Parallel Processing
+    try (BufferedReader reader = new BufferedReader(new FileReader("data/file-test.txt"))) {
+      System.out.println(reader.lines().parallel().reduce("", String::concat));
+    }
+
+    endTime = System.nanoTime();
+    long parallelTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    System.out.println("Parallel Processing Time: " + parallelTime + " milliseconds");
   }
 
 }

@@ -1,29 +1,40 @@
 package files;
 
 import java.io.*;
-import java.util.*;
-import java.util.stream.*;
-
-/******************************************************************************
- * This example uses a collector to combine all the lines of a file into a 
- * list.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Files08 {
 
   public static void main(String[] args) throws Exception {
-    BufferedReader r  = 
-        new BufferedReader(new FileReader("data/file-test.txt"));
+    long startTime = System.nanoTime();
 
-    List<String> l = r.lines().collect(Collectors.toList());
-    
-    for(String line: l){
-      System.out.println(line);
+    // Sequential Processing
+    try (BufferedReader reader = new BufferedReader(new FileReader("data/file-test.txt"))) {
+      List<String> lines = reader.lines().collect(Collectors.toList());
+
+      for (String line : lines) {
+        System.out.println(line);
+      }
     }
-    
-    r.close();
-  }
 
+    long endTime = System.nanoTime();
+    long sequentialTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    System.out.println("Sequential Processing Time: " + sequentialTime + " milliseconds");
+
+    // Reset start time for parallel processing
+    startTime = System.nanoTime();
+
+    // Parallel Processing
+    try (BufferedReader reader = new BufferedReader(new FileReader("data/file-test.txt"))) {
+      List<String> lines = reader.lines().parallel().collect(Collectors.toList());
+
+      lines.forEach(System.out::println);
+    }
+
+    endTime = System.nanoTime();
+    long parallelTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    System.out.println("Parallel Processing Time: " + parallelTime + " milliseconds");
+  }
 }

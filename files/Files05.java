@@ -1,28 +1,38 @@
 package files;
 
 import java.io.*;
-
-/******************************************************************************
- * This program sorts the lines of a file so that the shortest lines are 
- * output last.
- *  
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
+import java.util.concurrent.TimeUnit;
 
 public class Files05 {
 
   public static void main(String[] args) throws Exception {
-    BufferedReader r = new BufferedReader(new FileReader("data/file-test.txt"));
+    long startTime = System.nanoTime();
 
-    r.lines().sorted((a, b) -> {
-      if (a.length() == b.length())
-        return 0;
-      if (a.length() < b.length())
-        return 1;
-      return -1;
-    }).forEach(l -> System.out.println(l));
+    // Sequential Processing
+    try (BufferedReader reader = new BufferedReader(new FileReader("data/file-test.txt"))) {
+      reader.lines()
+            .sorted((a, b) -> Integer.compare(b.length(), a.length()))
+            .forEach(System.out::println);
+    }
 
-    r.close();
+    long endTime = System.nanoTime();
+    long sequentialTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    System.out.println("Sequential Processing Time: " + sequentialTime + " milliseconds");
+
+    // Reset start time for parallel processing
+    startTime = System.nanoTime();
+
+    // Parallel Processing
+    try (BufferedReader reader = new BufferedReader(new FileReader("data/file-test.txt"))) {
+      reader.lines()
+            .parallel()
+            .sorted((a, b) -> Integer.compare(b.length(), a.length()))
+            .forEach(System.out::println);
+    }
+
+    endTime = System.nanoTime();
+    long parallelTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    System.out.println("Parallel Processing Time: " + parallelTime + " milliseconds");
   }
 
 }

@@ -1,14 +1,11 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
+import java.io.PrintStream;
+import java.util.concurrent.CompletableFuture;
 
-/******************************************************************************
- * This shows how a lambda can be used to respond to a button press event. This
- * version uses more compact and cleaner than the previous version.
- * 
- * @author Dr Kevan Buckley, University of Wolverhampton, 2019
- ******************************************************************************/
 
 public class GUI02 {
 
@@ -17,11 +14,27 @@ public class GUI02 {
     JButton b = new JButton("Press Me");
     f.setLayout(new BorderLayout());
     f.add(b, BorderLayout.CENTER);
-    b.addActionListener(
-        event -> System.out.println("Button says: " + 
-                   event.getActionCommand()));
+
+    b.addActionListener(event -> {
+      long startTime = System.currentTimeMillis();
+      System.out.println("Button says: " + event.getActionCommand());
+
+      // Additional functionality: Print the stream and processing time
+      CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+        printStreamAndProcessingTime(System.out, startTime);
+      });
+
+      // Wait for parallel processing to complete
+      future.join();
+    });
+
     f.pack();
     f.setVisible(true);
   }
 
+  // Additional method to print stream and processing time
+  private static void printStreamAndProcessingTime(PrintStream stream, long startTime) {
+    long processingTime = System.currentTimeMillis() - startTime;
+    stream.println("Processing Time: " + processingTime + " milliseconds");
+  }
 }
